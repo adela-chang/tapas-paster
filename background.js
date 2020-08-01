@@ -10,16 +10,39 @@ function getContentFromClipboard() {
         var i;
         for (i = 0; i < descendants.length; i++) {
             var d = descendants[i];
+            if (d.style.fontStyle == "italic") {
+                var wrapper = document.createElement('i');
+                d.parentNode.insertBefore(wrapper, d);
+                wrapper.appendChild(d);
+            }
+            if (d.style.fontStyle == "bold" || d.style.fontWeight == "700") {
+                var wrapper = document.createElement('b');
+                d.parentNode.insertBefore(wrapper, d);
+                wrapper.appendChild(d);
+            }           
             d.removeAttribute("style");
             d.removeAttribute("class");
-            if (d.innerHTML === "") {
-                d.parentNode.removeChild(d);
+            var tag = d.tagName.toLowerCase();
+            if (tag != "i" && tag != "b" && tag != "p") {
+                unwrap(d);
             }
         }
         result = sandbox.innerHTML;
     }
     sandbox.innerHTML = '';
     return result;
+}
+
+function unwrap(wrapper) {
+    // place childNodes in document fragment
+    var docFrag = document.createDocumentFragment();
+    while (wrapper.firstChild) {
+        var child = wrapper.removeChild(wrapper.firstChild);
+        docFrag.appendChild(child);
+    }
+
+    // replace wrapper with document fragment
+    wrapper.parentNode.replaceChild(docFrag, wrapper);
 }
 
 /**
