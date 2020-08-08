@@ -16,7 +16,7 @@ function getContentFromClipboard() {
         result = sandbox.innerHTML;
     }
     sandbox.innerHTML = '';
- return result;
+    return result;
 }
 
 function insertItalicsAndBold(d) {
