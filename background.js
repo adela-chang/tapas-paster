@@ -9,28 +9,37 @@ function getContentFromClipboard() {
         var descendants = sandbox.querySelectorAll('*');
         var i;
         for (i = 0; i < descendants.length; i++) {
-            var d = descendants[i];
-            if (d.style.fontStyle == "italic") {
-                var wrapper = document.createElement('i');
-                d.parentNode.insertBefore(wrapper, d);
-                wrapper.appendChild(d);
-            }
-            if (d.style.fontStyle == "bold" || d.style.fontWeight == "700") {
-                var wrapper = document.createElement('b');
-                d.parentNode.insertBefore(wrapper, d);
-                wrapper.appendChild(d);
-            }           
-            d.removeAttribute("style");
-            d.removeAttribute("class");
-            var tag = d.tagName.toLowerCase();
-            if (tag != "i" && tag != "b" && tag != "p") {
-                unwrap(d);
-            }
+            var d = (descendants[i]);
+            insertItalicsAndBold(d);
+            stripStyles(d);
         }
         result = sandbox.innerHTML;
     }
     sandbox.innerHTML = '';
-    return result;
+ return result;
+}
+
+function insertItalicsAndBold(d) {
+    if (d.style.fontStyle == "italic") {
+        var wrapper = document.createElement('i');
+        d.parentNode.insertBefore(wrapper, d);
+        wrapper.appendChild(d);
+    }
+    if (d.style.fontStyle == "bold" || d.style.fontWeight == "700") {
+        var wrapper = document.createElement('b');
+        d.parentNode.insertBefore(wrapper, d);
+        wrapper.appendChild(d);
+    }
+}
+
+function stripStyles(d) {
+    while(d.attributes.length > 0) {
+        d.removeAttribute(d.attributes[0].name);
+    }
+    var tag = d.tagName.toLowerCase();
+    if (tag != "i" && tag != "b" && tag != "p") {
+        unwrap(d);
+    }
 }
 
 function unwrap(wrapper) {
@@ -42,7 +51,9 @@ function unwrap(wrapper) {
     }
 
     // replace wrapper with document fragment
-    wrapper.parentNode.replaceChild(docFrag, wrapper);
+    if (wrapper.parentNode != null) {
+        wrapper.parentNode.replaceChild(docFrag, wrapper);        
+    }
 }
 
 /**
