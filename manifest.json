@@ -1,6 +1,6 @@
   {
   	"name": "Tapas Paster",
-  	"version": "1.0.1",
+  	"version": "1.0.2",
   	"description": "Allow novelists to paste text into the Tapas editor and retain bold/italic formatting.",
   	"permissions": [
   		"clipboardRead",

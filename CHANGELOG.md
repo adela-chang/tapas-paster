@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.2 (08/07/2020)
+
+#### Bug fixes:
+
+- Fix bug in which source text from Microsoft Word pastes with missing spaces
+
 ## v1.0.1 (08/01/2020)
 
 #### Enhancements:
